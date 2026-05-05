@@ -47,6 +47,8 @@ public class CoderController {
         return service.deleteCoderById(id);
     }
 /*
+    // CONTROLLER DE ACUERDO CON LO PEDIDO EN EL DÍA 2.
+    
     private List<Coder> coders = new ArrayList<>();
    
     @GetMapping("/{id}") // endpoint para obtener un coder por id
