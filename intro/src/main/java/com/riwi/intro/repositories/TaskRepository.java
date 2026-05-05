@@ -33,5 +33,22 @@ public class TaskRepository {
         }
         return null;
     }
+    
+    public Task updateById(int id, String description){
+        Task task = finById(id);
+        if(task != null){
+            task.setDescription(description);
+            return task;
+        }
+        return null;
+    }
 
+    public Task finById(int id){
+        for(Task task : tasks){
+            if(task.getId() == id){
+                return task;
+            }
+        }
+        return null;
+    }
 }
