@@ -20,11 +20,12 @@ public class TaskRepository {
     }
 
     public Task deleteById(int id){
-        Task tarea = tasks.get(id);
-        tasks.remove(tarea);
-        return tarea;
+    Task task = findById(id);
+    if(task != null){
+        tasks.remove(task);
     }
-
+    return task;
+    }
     public Task update(Task task, String description){
         int index = tasks.indexOf(task);
         if(index != -1){
@@ -33,9 +34,9 @@ public class TaskRepository {
         }
         return null;
     }
-    
+
     public Task updateById(int id, String description){
-        Task task = finById(id);
+        Task task = findById(id);
         if(task != null){
             task.setDescription(description);
             return task;
@@ -43,7 +44,7 @@ public class TaskRepository {
         return null;
     }
 
-    public Task finById(int id){
+    public Task findById(int id){
         for(Task task : tasks){
             if(task.getId() == id){
                 return task;

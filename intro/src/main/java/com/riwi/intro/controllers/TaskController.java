@@ -28,7 +28,7 @@ public class TaskController {
         return service.getTaskById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Task> getAllTasks(){
         return service.getAll();
     }

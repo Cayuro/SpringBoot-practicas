@@ -24,11 +24,11 @@ public class TaskService {
     }
 
     public Task getTaskById(int id){
-        return repository.finById(id);
+        return repository.findById(id);
     }
 
     public Task save(Task task){
-        if (task.getDescription() == null) {
+        if (task.getDescription() == null || task.getDescription().isBlank()) {
             throw new RuntimeException("Debe tener una descripción de la tarea");
         } else if(getTaskById(task.getId()) != null){
             throw new RuntimeException("Ese ID ya está asignado a una task");
