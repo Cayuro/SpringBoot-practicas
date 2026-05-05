@@ -37,7 +37,34 @@ public class CoderController {
         return coder; // retorna el coder creado
     }
 
-
+    @DeleteMapping("/{id}") // endpoint para eliminar un coder por id
+    public Coder deleteCoderById(@PathVariable Long id){
+        /*
+        // solo usar cuando se retorna string, para evitar editar mientras
+        // se recorre la lista
+         boolean elimin = coders.removeIf(c -> c.getId().equals(id));
+         return removed ? "Coder eliminado" : "Coder no encontrado";
+        */
+        for(Coder coder : coders){
+            if(coder.getId().equals(id)){
+                coders.remove(coder);
+                return coder;
+            }
+        }
+        return null;
+    }
+    
+    @PutMapping("/{id}") // endpoint para delete
+    public Coder update(@PathVariable Long id, @RequestBody Coder update){
+        for(Coder coder : coders){
+            if(coder.getId().equals(id)){
+                coder.setName(update.getName());
+                coder.setClan(update.getClan());
+                return "Coder id: " + coder.getId() + " actualizado";
+            }
+        }
+        return "Coder id: " + id + " no encontrado";
+    }
     //  ==== Adicional puede ser eliminado si genera problemas === 
     @GetMapping // endpoint para obtener todos los coders
     public List<Coder> getAllCoders() {
