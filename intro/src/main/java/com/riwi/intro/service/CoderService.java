@@ -2,14 +2,12 @@ package com.riwi.intro.service;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.riwi.intro.models.Coder;
 import com.riwi.intro.repositories.CoderRepository;
 
 @Service
-@Scope("prototype")
 public class CoderService{
     private final CoderRepository repository;
 

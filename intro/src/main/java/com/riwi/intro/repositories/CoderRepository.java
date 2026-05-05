@@ -29,14 +29,12 @@ public class CoderRepository{
 
     
     public Coder delete(Long id){
-     for(Coder coder : coders){
-            if(coder.getId().equals(id)){
-                coders.remove(coder);
-                return coder;
-            }
-        }
-        return null;
+     Coder found = findById(id);
+    if(found != null){
+        coders.remove(found);
     }
+    return found;
+}
 
     public Coder update(Long id, Coder update){
         for(Coder coder : coders){

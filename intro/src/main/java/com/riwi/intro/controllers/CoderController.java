@@ -2,8 +2,10 @@ package com.riwi.intro.controllers;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,7 @@ public class CoderController {
         this.service = coder;
     }
     @GetMapping
-    public List<Coder> getCoders(Long id){
+    public List<Coder> getCoders(){
         return service.getAll();
     }
 
@@ -34,7 +36,16 @@ public class CoderController {
     public Coder update(@PathVariable Long id, @RequestBody Coder update){
         return service.updateCoderById(id, update);
     }
-        
+    
+    @PostMapping // endpoint para agregar un nuevo coder
+    public Coder create(@RequestBody Coder coder){
+        return service.create(coder); // retorna el coder creado
+    }
+
+    @DeleteMapping("/{id}") // endpoint para eliminar un coder por id
+    public Coder deleteCoderById(@PathVariable Long id){
+        return service.deleteCoderById(id);
+    }
 /*
     private List<Coder> coders = new ArrayList<>();
    
