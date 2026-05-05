@@ -16,6 +16,21 @@ import com.riwi.intro.models.Coder;
 @RestController
 @RequestMapping("/api/coders") // prefijo para endpoints de controller
 public class CoderController {
+    private final CoderService service;
+
+    public CoderController(CoderService coder){
+        this.service = coder;
+    }
+    
+
+
+
+   
+   
+   
+   
+   
+/*
     private List<Coder> coders = new ArrayList<>();
    
     @GetMapping("/{id}") // endpoint para obtener un coder por id
@@ -39,13 +54,17 @@ public class CoderController {
 
     @DeleteMapping("/{id}") // endpoint para eliminar un coder por id
     public Coder deleteCoderById(@PathVariable Long id){
+
+*/ 
+
         /*
         // solo usar cuando se retorna string, para evitar editar mientras
         // se recorre la lista
          boolean elimin = coders.removeIf(c -> c.getId().equals(id));
          return removed ? "Coder eliminado" : "Coder no encontrado";
-        */
-        for(Coder coder : coders){
+      */
+
+/*        for(Coder coder : coders){
             if(coder.getId().equals(id)){
                 coders.remove(coder);
                 return coder;
@@ -70,4 +89,5 @@ public class CoderController {
     public List<Coder> getAllCoders() {
         return coders;
     }
+*/
 }
