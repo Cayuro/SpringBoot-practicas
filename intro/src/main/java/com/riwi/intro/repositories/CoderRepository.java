@@ -10,6 +10,7 @@ import com.riwi.intro.models.Coder;
 @Repository
 public class CoderRepository{
     private List<Coder> coders = new ArrayList<>();
+    private int count=0;
 
     public Coder findById(Long id){
         for(Coder coder : coders){
@@ -24,17 +25,20 @@ public class CoderRepository{
         return coders;
     }
     public void save(Coder coder){
+        count++;
+        coder.setId((long) count);
         coders.add(coder);
     }
 
     
     public Coder delete(Long id){
-     Coder found = findById(id);
-    if(found != null){
+        // utilizamos el metodo de findById, así encontramos el coder.
+        Coder found = findById(id);
+        if(found != null){
         coders.remove(found);
+        }
+        return found;
     }
-    return found;
-}
 
     public Coder update(Long id, Coder update){
         for(Coder coder : coders){

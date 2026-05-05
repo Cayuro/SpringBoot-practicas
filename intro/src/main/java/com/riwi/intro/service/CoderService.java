@@ -23,8 +23,12 @@ public class CoderService{
 
     //create coder
     public Coder create(Coder coder){
+        
         if(coder.getName() == null || coder.getName().isEmpty()){
             throw new RuntimeException("El nombre es obligatorio");
+        }
+        if (getCoderById(coder.getId()) != null) {
+            throw new RuntimeException("El ID ya existe");
         }
         repository.save(coder);
         return coder;
