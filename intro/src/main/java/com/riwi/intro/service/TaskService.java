@@ -2,10 +2,7 @@ package com.riwi.intro.service;
 
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.riwi.intro.models.Task;
 import com.riwi.intro.repositories.TaskRepository;

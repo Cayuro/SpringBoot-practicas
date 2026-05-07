@@ -19,6 +19,8 @@ public class TaskRepository {
         tasks.add(task);
     }
 
+    // tener cuidado de no usar get porque retorna es con indice,
+    // por lo mismo se usa un findById que ya se tiene aquí.
     public Task deleteById(int id){
     Task task = findById(id);
     if(task != null){
@@ -26,6 +28,7 @@ public class TaskRepository {
     }
     return task;
     }
+
     public Task update(Task task, String description){
         int index = tasks.indexOf(task);
         if(index != -1){
