@@ -2,24 +2,39 @@ package com.riwi.libros.service;
 
 import com.riwi.libros.models.Libro;
 import com.riwi.libros.repositories.LibroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LibroService {
 
-    private LibroRepository libroRepository;
+    private final LibroRepository repository;
 
-    @Autowired
-    public LibroService(LibroRepository libroRepository) {this.libroRepository = libroRepository;}
+    public LibroService(LibroRepository repository) {
+        this.repository = repository;
+    }
+
     public List<Libro> obtenerTodos() {
-        return libroRepository.findAll();
+        return repository.findAll();
+    }
+
+    public Optional<Libro> obtenerPorId(Long id) {
+        return repository.findById(id);
     }
 
     public Libro guardar(Libro libro) {
-        // Aquí podríamos añadir lógica de negocio (ej. validar el ISBN)
-        return libroRepository.save(libro);
+        return repository.save(libro);
+    }
+
+    public boolean eliminarById(Long id) {
+
+        if (!repository.existsById(id)) {
+            return false;
+        }
+
+        repository.deleteById(id);
+        return true;
     }
 }

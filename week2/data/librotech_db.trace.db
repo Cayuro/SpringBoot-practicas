@@ -1,0 +1,20 @@
+2026-05-12 11:04:03.540543-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]SELEC * FROM libros"; se esperaba "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SELEC * FROM libros"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SELEC * FROM libros [42001-232]
+2026-05-12 11:04:08.074794-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]SELEC * FROM LIBROS"; se esperaba "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SELEC * FROM LIBROS"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SELEC * FROM LIBROS [42001-232]
+2026-05-12 11:06:24.000571-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "UPDATE LIBROS \000d\000a[*]VALUES (AUTOR = 'Juan Esteban Gomez')\000d\000aWHERE ID = '1'"; se esperaba "., AS, SET"
+Syntax error in SQL statement "UPDATE LIBROS \000d\000a[*]VALUES (AUTOR = 'Juan Esteban Gomez')\000d\000aWHERE ID = '1'"; expected "., AS, SET"; SQL statement:
+UPDATE LIBROS 
+VALUES (AUTOR = 'Juan Esteban Gomez')
+WHERE ID = '1' [42001-232]
+2026-05-12 11:06:42.055209-05:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "UPDATE LIBROS \000d\000aSET (AUTOR [*]= 'Juan Esteban Gomez')\000d\000aWHERE ID = '1'"; se esperaba "., [, ,, )"
+Syntax error in SQL statement "UPDATE LIBROS \000d\000aSET (AUTOR [*]= 'Juan Esteban Gomez')\000d\000aWHERE ID = '1'"; expected "., [, ,, )"; SQL statement:
+UPDATE LIBROS 
+SET (AUTOR = 'Juan Esteban Gomez')
+WHERE ID = '1' [42001-232]
