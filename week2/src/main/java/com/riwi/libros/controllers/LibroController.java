@@ -1,6 +1,8 @@
 package com.riwi.libros.controllers;
 
+import com.riwi.libros.dto.response.RecomendacionResponseDTO;
 import com.riwi.libros.models.Libro;
+import com.riwi.libros.service.AiLibroService;
 import com.riwi.libros.service.LibroService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,11 @@ import java.util.List;
 public class LibroController {
 
     private final LibroService service;
+    private final AiLibroService aiLibroService;
 
-    public LibroController(LibroService service) {
+    public LibroController(LibroService service, AiLibroService aiLibroService) {
         this.service = service;
+        this.aiLibroService = aiLibroService;
     }
 
     @GetMapping("/{id}")
@@ -28,6 +32,11 @@ public class LibroController {
     @GetMapping
     public List<Libro> listar() {
         return service.obtenerTodos();
+    }
+
+    @GetMapping({"/recomendaciones", "/ia/recomendaciones"})
+    public ResponseEntity<RecomendacionResponseDTO> recomendar(@RequestParam String consulta) {
+        return ResponseEntity.ok(aiLibroService.recomendarLibros(consulta));
     }
 
     @PostMapping

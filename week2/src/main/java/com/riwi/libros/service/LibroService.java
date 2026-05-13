@@ -37,4 +37,13 @@ public class LibroService {
         repository.deleteById(id);
         return true;
     }
+
+    public Libro actualizar(Long id, Libro libro) {
+        if (!repository.existsById(id)) {
+            return null;
+        }
+
+        libro.setId(id);
+        return repository.save(libro);
+    }
 }
