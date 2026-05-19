@@ -1,9 +1,11 @@
-com/riwi/libros/assistant/LibroAssistant.class
 com/riwi/libros/config/AiConfig.class
+com/riwi/libros/assistant/LibroAssistant.class
 com/riwi/libros/service/AiLibroService$Candidato.class
 com/riwi/libros/dto/response/LibroResponseDTO.class
 com/riwi/libros/config/AppConfig.class
+com/riwi/libros/dto/response/LibroRecomendadoDTO.class
 com/riwi/libros/service/LibroService.class
+com/riwi/libros/dto/response/RecomendacionResponseDTO.class
 com/riwi/libros/models/Libro.class
 com/riwi/libros/LibrosApplication.class
 com/riwi/libros/service/AiLibroService.class

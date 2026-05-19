@@ -1,0 +1,27 @@
+# IDEs
+.idea/
+.vscode/
+
+# Configuración local / agentes
+.agents/
+.codex/
+
+# Archivos compilados de Java
+target/
+*.class
+
+# Logs
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# markdowns - documentación para estudiar y entender mejor
+/home/cohorte6/Desktop/SpringBoot-practicas/week3/DIAGNOSTICO_CONFIGURACION_SPRING_BOOT.md
+/home/cohorte6/Desktop/SpringBoot-practicas/week3/GUIA_FLUJO_IA_RECOMENDACIONES_LIBROS.md
+/home/cohorte6/Desktop/SpringBoot-practicas/week3/GUIA_RAPIDA_RECOMENDACIONES_LIBROS.md
+
+# properties
+*.properties
+/home/cohorte6/Desktop/SpringBoot-practicas/week3/src/main/resources/application.properties
