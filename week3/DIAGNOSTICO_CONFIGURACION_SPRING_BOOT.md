@@ -219,3 +219,75 @@ com.riwi.libros.LibrosApplication
 ```
 
 La solucion fue alinear paquetes, clase principal, tests, configuracion de IntelliJ, version de Java en Maven y Maven Wrapper.
+
+## Revision actual: Spring Boot y dependencias no reconocidas
+
+AQUI HAY UN ERROR POSIBLE: IntelliJ parece no estar reconociendo completamente el proyecto como proyecto Maven/Spring Boot.
+
+La senal mas clara esta en:
+
+```text
+.idea/SpringBoot-practicas.iml
+```
+
+Ese archivo solo muestra esta libreria cargada:
+
+```xml
+<orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.46" level="project" />
+```
+
+Pero el `pom.xml` de `week3` declara varias dependencias importantes:
+
+```text
+spring-boot-starter-web
+spring-boot-starter-test
+spring-boot-starter-data-jpa
+h2
+springdoc-openapi-starter-webmvc-ui
+langchain4j
+```
+
+Si IntelliJ solo muestra Lombok en el modulo, puede marcar en rojo imports de Spring Boot como:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+```
+
+Y tambien imports de JPA como:
+
+```java
+import jakarta.persistence.*;
+```
+
+Esto no significa necesariamente que el `pom.xml` este mal. Mas bien indica que IntelliJ no sincronizo bien Maven o que el proyecto fue abierto desde una carpeta que no esta quedando bien asociada al `pom.xml`.
+
+AQUI HAY UN ERROR POSIBLE: el proyecto raiz `SpringBoot-practicas` tiene configuracion de IntelliJ, pero el `pom.xml` real esta dentro de:
+
+```text
+week3/pom.xml
+```
+
+Por eso puede pasar que IntelliJ vea carpetas Java, pero no cargue todas las dependencias Maven de `week3`.
+
+La clase principal actual si parece estar en el paquete correcto:
+
+```text
+week3/src/main/java/com/riwi/libros/LibrosApplication.java
+```
+
+Y usa:
+
+```java
+@SpringBootApplication
+```
+
+Entonces, si `SpringApplication` o `SpringBootApplication` aparecen en rojo, el problema mas probable no esta en esa clase, sino en que IntelliJ no esta usando correctamente las dependencias declaradas en `week3/pom.xml`.
+
+Para revisar esto manualmente en IntelliJ:
+
+1. Abrir el panel de Maven.
+2. Verificar que aparezca `week3/pom.xml`.
+3. Usar `Reload All Maven Projects`.
+4. Si sigue fallando, abrir directamente la carpeta `week3` como proyecto.
+5. Revisar en `Project Structure > Modules` que aparezcan las dependencias de Spring Boot, no solo Lombok.

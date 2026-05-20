@@ -1,8 +1,6 @@
 package com.riwi.libros.controllers;
 
-import com.riwi.libros.dto.response.RecomendacionResponseDTO;
 import com.riwi.libros.models.Libro;
-import com.riwi.libros.service.AiLibroService;
 import com.riwi.libros.service.LibroService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class LibroController {
 
     private final LibroService service;
-    private final AiLibroService aiLibroService;
 
-    public LibroController(LibroService service, AiLibroService aiLibroService) {
+    public LibroController(LibroService service) {
         this.service = service;
-        this.aiLibroService = aiLibroService;
     }
 
     @GetMapping("/{id}")
@@ -35,11 +31,6 @@ public class LibroController {
     public ResponseEntity<Page<Libro>> listar(
             @PageableDefault(size = 10, sort = "titulo", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(service.listarPaginado(pageable));
-    }
-
-    @GetMapping({"/recomendaciones", "/ia/recomendaciones"})
-    public ResponseEntity<RecomendacionResponseDTO> recomendar(@RequestParam String consulta) {
-        return ResponseEntity.ok(aiLibroService.recomendarLibros(consulta));
     }
 
     @PostMapping

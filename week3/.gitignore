@@ -1,3 +1,4 @@
 *.properties
 /home/cohorte6/Desktop/SpringBoot-practicas/week2/src/main/resources/application.properties
-/target
+target/
+*.class

@@ -1,12 +1,16 @@
 package com.riwi.libros.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
 @Entity
 @Table(name = "libros")
 public class Libro {
@@ -26,7 +30,8 @@ public class Libro {
 
     private int anioPublicacion;
 
-    public Libro() {}
+    public Libro() {
+    }
 
     public Libro(Long id, String titulo, String autor, String isbn, int anioPublicacion) {
         this.id = id;
