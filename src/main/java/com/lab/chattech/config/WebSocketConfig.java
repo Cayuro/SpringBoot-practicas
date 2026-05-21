@@ -12,16 +12,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-
-        config.enableSimpleBroker("/tema");
-
+        // Los clientes se suscriben a /topic y envían mensajes a /app.
+        config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-
-        registry.addEndpoint("/chat-websocket").withSockJS();
+        // Este es el endpoint base para la conexión WebSocket STOMP.
+        registry.addEndpoint("/chat-websocket").setAllowedOriginPatterns("*");
     }
-
 }

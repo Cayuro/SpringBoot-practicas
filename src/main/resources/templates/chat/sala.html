@@ -1,10 +1,407 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatTech</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg-start: #10213a;
+            --bg-end: #08111f;
+            --panel: rgba(13, 23, 39, 0.92);
+            --panel-border: rgba(255, 255, 255, 0.12);
+            --text-main: #f3f7ff;
+            --text-soft: #a9b8d4;
+            --accent: #5dd6c3;
+            --accent-strong: #33b9a5;
+            --user: #1f3d68;
+            --bot: #163d31;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top left, rgba(93, 214, 195, 0.22), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(69, 119, 255, 0.24), transparent 30%),
+                linear-gradient(160deg, var(--bg-start), var(--bg-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .shell {
+            width: min(1100px, 100%);
+            min-height: 82vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 18px;
+            padding: 24px;
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
+            background: var(--panel);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+            backdrop-filter: blur(14px);
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: clamp(1.7rem, 3vw, 2.5rem);
+            letter-spacing: 0.03em;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: var(--text-soft);
+            max-width: 60ch;
+            line-height: 1.5;
+        }
+
+        .status {
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(93, 214, 195, 0.12);
+            border: 1px solid rgba(93, 214, 195, 0.32);
+            color: var(--accent);
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .messages {
+            overflow-y: auto;
+            padding-right: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .empty-state {
+            margin: auto;
+            text-align: center;
+            color: var(--text-soft);
+            padding: 48px 16px;
+            max-width: 36rem;
+        }
+
+        .message {
+            max-width: min(82%, 720px);
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(180deg, rgba(31, 61, 104, 0.98), rgba(22, 43, 72, 0.98));
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: linear-gradient(180deg, rgba(22, 61, 49, 0.98), rgba(16, 40, 35, 0.98));
+        }
+
+        .message-meta {
+            display: flex;
+            gap: 10px;
+            align-items: baseline;
+            margin-bottom: 8px;
+            color: var(--text-soft);
+            font-size: 0.88rem;
+        }
+
+        .message-author {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .composer {
+            display: grid;
+            grid-template-columns: 180px 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .composer input,
+        .composer button {
+            width: 100%;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            font: inherit;
+        }
+
+        .composer input {
+            padding: 14px 16px;
+            background: rgba(8, 14, 24, 0.9);
+            color: var(--text-main);
+        }
+
+        .composer input::placeholder {
+            color: #7f8fae;
+        }
+
+        .composer button {
+            padding: 14px 20px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+            color: #04121b;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .composer button:hover {
+            filter: brightness(1.05);
+        }
+
+        .composer button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 760px) {
+            .shell {
+                min-height: 90vh;
+                padding: 18px;
+            }
+
+            .message {
+                max-width: 94%;
+            }
+
+            .composer {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+<div class="shell">
+    <header class="header">
+        <div>
+            <h1 class="title">ChatTech</h1>
+            <p class="subtitle">Sala de chat con WebSocket STOMP y respuesta automática de Spring AI. El historial se carga al abrir la página y los nuevos mensajes se publican en tiempo real.</p>
+        </div>
+        <div id="status" class="status">Conectando al chat...</div>
+    </header>
 
+    <main id="messages" class="messages" aria-live="polite">
+        <div th:if="${#lists.isEmpty(historial)}" class="empty-state">
+            Todavía no hay mensajes. Escribe el primero para probar la conexión WebSocket.
+        </div>
+
+        <article th:each="mensaje : ${historial}"
+                 class="message"
+                 th:classappend="${mensaje.remitente == 'LibroBot IA'} ? ' bot' : ' user'">
+            <div class="message-meta">
+                <span class="message-author" th:text="${mensaje.remitente}">Usuario</span>
+                <span th:text="${#temporals.format(mensaje.fechaEnvio, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</span>
+            </div>
+            <div th:text="${mensaje.contenido}">Mensaje de ejemplo</div>
+        </article>
+    </main>
+
+    <form id="chat-form" class="composer">
+        <input id="remitente" type="text" placeholder="Tu nombre" value="Usuario">
+        <input id="contenido" type="text" placeholder="Escribe un mensaje y presiona Enter" autocomplete="off">
+        <button id="enviar" type="submit">Enviar</button>
+    </form>
+</div>
+
+<script>
+    const messagesContainer = document.getElementById('messages');
+    const statusElement = document.getElementById('status');
+    const form = document.getElementById('chat-form');
+    const senderInput = document.getElementById('remitente');
+    const contentInput = document.getElementById('contenido');
+    const sendButton = document.getElementById('enviar');
+
+    let webSocket;
+    let stompBuffer = '';
+
+    function scrollToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function formatDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) {
+            return '';
+        }
+        return date.toLocaleString();
+    }
+
+    function createMessageElement(message) {
+        const article = document.createElement('article');
+        const isBot = message.remitente === 'LibroBot IA';
+        article.className = isBot ? 'message bot' : 'message user';
+
+        const meta = document.createElement('div');
+        meta.className = 'message-meta';
+
+        const author = document.createElement('span');
+        author.className = 'message-author';
+        author.textContent = message.remitente || 'Usuario';
+
+        const date = document.createElement('span');
+        date.textContent = formatDate(message.fechaEnvio);
+
+        meta.appendChild(author);
+        meta.appendChild(date);
+
+        const body = document.createElement('div');
+        body.textContent = message.contenido || '';
+
+        article.appendChild(meta);
+        article.appendChild(body);
+        return article;
+    }
+
+    function appendMessage(message) {
+        const emptyState = document.querySelector('.empty-state');
+        if (emptyState) {
+            emptyState.remove();
+        }
+
+        messagesContainer.appendChild(createMessageElement(message));
+        scrollToBottom();
+    }
+
+    function sendFrame(command, headers, body) {
+        const lines = [command];
+        Object.entries(headers).forEach(function ([key, value]) {
+            lines.push(key + ':' + value);
+        });
+        lines.push('');
+        lines.push(body || '');
+        webSocket.send(lines.join('\n') + '\0');
+    }
+
+    function parseFrame(frameText) {
+        const separatorIndex = frameText.indexOf('\n\n');
+        const headerText = separatorIndex >= 0 ? frameText.slice(0, separatorIndex) : frameText;
+        const bodyText = separatorIndex >= 0 ? frameText.slice(separatorIndex + 2).replace(/\n$/, '') : '';
+        const headerLines = headerText.split('\n');
+        const command = headerLines.shift();
+        const headers = {};
+
+        headerLines.forEach(function (line) {
+            const colonIndex = line.indexOf(':');
+            if (colonIndex > 0) {
+                const key = line.slice(0, colonIndex);
+                const value = line.slice(colonIndex + 1);
+                headers[key] = value;
+            }
+        });
+
+        return {
+            command: command,
+            headers: headers,
+            body: bodyText
+        };
+    }
+
+    function handleFrame(frame) {
+        if (!frame.command) {
+            return;
+        }
+
+        if (frame.command === 'CONNECTED') {
+            statusElement.textContent = 'Conectado al chat';
+            sendFrame('SUBSCRIBE', {
+                id: 'sub-0',
+                destination: '/topic/mensajes',
+                ack: 'auto'
+            });
+            scrollToBottom();
+            return;
+        }
+
+        if (frame.command === 'MESSAGE' && frame.body) {
+            appendMessage(JSON.parse(frame.body));
+        }
+    }
+
+    function connectWebSocket() {
+        const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        const socketUrl = scheme + '://' + window.location.host + '/chat-websocket';
+        webSocket = new WebSocket(socketUrl);
+
+        webSocket.onopen = function () {
+            statusElement.textContent = 'Conectando al chat...';
+            sendFrame('CONNECT', {
+                'accept-version': '1.2',
+                'heart-beat': '10000,10000'
+            });
+        };
+
+        webSocket.onmessage = function (event) {
+            stompBuffer += event.data;
+
+            while (stompBuffer.includes('\0')) {
+                const frameText = stompBuffer.slice(0, stompBuffer.indexOf('\0'));
+                stompBuffer = stompBuffer.slice(stompBuffer.indexOf('\0') + 1);
+
+                if (frameText.trim() !== '') {
+                    handleFrame(parseFrame(frameText));
+                }
+            }
+        };
+
+        webSocket.onclose = function () {
+            statusElement.textContent = 'La conexión se cerró';
+        };
+
+        webSocket.onerror = function () {
+            statusElement.textContent = 'No se pudo conectar al chat';
+        };
+    }
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const remitente = senderInput.value.trim() || 'Usuario';
+        const contenido = contentInput.value.trim();
+
+        if (!contenido || !webSocket || webSocket.readyState !== WebSocket.OPEN) {
+            return;
+        }
+
+        sendButton.disabled = true;
+        sendFrame('SEND', {
+            destination: '/app/enviar',
+            'content-type': 'application/json'
+        }, JSON.stringify({
+            remitente: remitente,
+            contenido: contenido
+        }));
+
+        contentInput.value = '';
+        contentInput.focus();
+        sendButton.disabled = false;
+    });
+
+    connectWebSocket();
+    scrollToBottom();
+</script>
 </body>
 </html>
