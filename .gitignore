@@ -4,6 +4,8 @@ ChatTech-with-Virtual-Assistant/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+#properties
+src/main/resources/application-dev.properties
 ### STS ###
 .apt_generated
 .classpath

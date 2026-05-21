@@ -1,0 +1,15 @@
+server.port=8080
+
+#Spring Data JPA
+spring.datasource.url=jdbc:postgresql://localhost:5432/chat
+spring.datasource.username=UtiBunna
+spring.datasource.password=UtiBunna
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.sql.init.mode=always
+
+# Spring AI
+spring.ai.openai.api-key=sk-xxxxxxxxxxxxxxxx
+spring.ai.openai.chat.options.model=gpt-4o-mini
