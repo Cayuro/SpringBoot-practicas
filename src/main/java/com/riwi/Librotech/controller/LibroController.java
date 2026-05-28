@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import com.riwi.Librotech.dto.BookRequest;
 import com.riwi.Librotech.dto.BookResponse;
 import com.riwi.Librotech.dto.LibroResumenDTO;
+import com.riwi.Librotech.model.Libro;
 import com.riwi.Librotech.service.LibroService;
 import com.riwi.Librotech.validation.OnCreate;
 import com.riwi.Librotech.validation.OnPatch;
@@ -95,5 +96,11 @@ public class LibroController {
     public ResponseEntity<Void> patchBook(@PathVariable Long id, @RequestBody @Validated(OnPatch.class) BookRequest bookRequest) {
         bookServices.patchBook(id, bookRequest);
         return ResponseEntity.noContent().build();
+    }
+
+    // http://localhost:8080/api/books/1
+    @GetMapping("/{id}")
+    public Libro getById(@PathVariable Long id){
+        return bookServices.getLibroWithRelations(id);
     }
 }

@@ -1,6 +1,9 @@
 package com.riwi.Librotech.model;
 
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +26,7 @@ public class Genero {
     private String descripcion;
 
     @ManyToMany(mappedBy = "generos")
+    @JsonIgnore
     private Set<Libro> libros = new HashSet<>();
 
     // contructor con argumentos

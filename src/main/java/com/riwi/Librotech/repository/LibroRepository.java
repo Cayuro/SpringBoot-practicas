@@ -56,4 +56,11 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     @EntityGraph(attributePaths = {"editorial","generos"})
     @Query("SELECT l FROM Libro l ORDER BY l.fechaPublicacion DESC")
     List<Libro> findAllWithRelations();
+
+    // LIBRO LABORATORIO WEEK 4 # 3
+    // haciendo busquedas que incluyen consultas filtradas
+    @Query("""
+            
+            """)
+    List<Libro> findByPais(String pais);
 }
